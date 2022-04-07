@@ -1,0 +1,67 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+   
+   public static class Edge{
+      int src;
+      int nbr;
+      Edge(int src,int nbr){
+         this.src=src;
+         this.nbr=nbr;
+      }
+   }
+   public static void main(String[] args) throws Exception {
+      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+      int n = Integer.parseInt(br.readLine());
+      int k = Integer.parseInt(br.readLine());
+      
+      // write your code here
+      ArrayList<Edge>[] graph =  new ArrayList[n];
+      for(int i=0;i<n;i++){
+         graph[i] = new ArrayList<Edge>();
+      }
+      for(int i=0;i<k;i++){
+         String[] parts= br.readLine().split(" ");
+         int src = Integer.parseInt(parts[0]);
+         int dest = Integer.parseInt(parts[1]);
+         graph[src].add(new Edge(src,dest));
+         graph[dest].add(new Edge(dest,src));
+      }
+
+      ArrayList<ArrayList<Integer>> comps = new ArrayList<>();
+      boolean [] visited = new boolean[n]; 
+      for(int i =0  ; i<n ; i++){
+         if(visited[i]==false){
+            ArrayList<Integer> comp = new ArrayList<>();
+            gcc(graph,visited,i,comp);
+            comps.add(comp);
+
+                   }
+      }
+int ans = 0 ;
+  
+      for(int i = 0 ; i<comps.size();i++){
+         for(int j=i+1 ; j<comps.size();j++){
+            ans = ans + comps.get(i).size()*comps.get(j).size();
+         }
+      }
+      System.out.println(ans) ;
+   
+      
+
+   }
+   public static void gcc(ArrayList<Edge>[] graph , boolean[] visited , int src ,ArrayList<Integer> comp){
+   visited[src]=true;
+   comp.add(src);
+   for(Edge e : graph[src]){
+      if(visited[e.nbr]==false){
+         gcc(graph,visited,e.nbr,comp);
+      }
+   }
+   
+   }
+
+   }
+
