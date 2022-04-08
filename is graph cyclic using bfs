@@ -1,0 +1,81 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+   static class Edge {
+      int src;
+      int nbr;
+
+      Edge(int src, int nbr) {
+         this.src = src;
+         this.nbr = nbr;
+      }
+   }
+   static class Pair{
+      int src;
+      String path ;
+      Pair(int src,String path){
+         this.src=src;
+         this.path=path;
+      }
+   }
+
+   public static void main(String[] args) throws Exception {
+      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+      int vtces = Integer.parseInt(br.readLine());
+   
+      ArrayList<Edge>[] graph = new ArrayList[vtces];
+      for (int i = 0; i < vtces; i++) {
+         graph[i] = new ArrayList<>();
+      }
+
+      int edges = Integer.parseInt(br.readLine());
+      for (int i = 0; i < edges; i++) {
+         String[] parts = br.readLine().split(" ");
+         int v1 = Integer.parseInt(parts[0]);
+         int v2 = Integer.parseInt(parts[1]);
+         graph[v1].add(new Edge(v1, v2));
+         graph[v2].add(new Edge(v2, v1));
+      }
+
+      int src = 0;
+      boolean [] visited =new boolean[vtces];
+      // write your code here  
+      boolean isCyclic =false;
+      for(int i=0;i<vtces;i++){
+         if(visited[i]==false){
+            isCyclic= cycle_detector(graph,i,visited);
+            
+         }
+         if(isCyclic==true){
+            break;
+         }
+      }
+      System.out.println(isCyclic);
+   }
+
+
+   public static boolean cycle_detector(ArrayList<Edge>[] graph,int src , boolean [] visited){
+      boolean isCyclic =false;
+      
+      Queue<Pair> q = new ArrayDeque<>();
+      q.add(new Pair(src,src+""));
+      while(q.size()>0){
+         Pair v  =  q.remove();
+         if(visited[v.src]==true){
+            isCyclic=true;
+            break;
+         }
+         visited[v.src]=true;
+         // System.out.println(v.src+"@"+v.path);
+         for(Edge e :  graph[v.src]){
+            if(visited[e.nbr]==false){
+                  q.add(new Pair(e.nbr,v.path+e.nbr));
+            }
+         }
+
+      }
+      return isCyclic;
+   }
+}
