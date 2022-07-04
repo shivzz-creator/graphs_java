@@ -1,0 +1,72 @@
+class Solution {
+    public int swimInWater(int[][] grid) {
+            int n = grid.length ; 
+        int m = grid[0].length;
+        boolean [][] visited  = new boolean[n][m] ;
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+        
+        pq.add(new Pair(0,0,grid[0][0]));
+        int  [][] dir = {{0,1},{1,0},{0,-1},{-1,0}};
+        while(pq.size()>0){
+            
+        Pair rem = pq.remove();
+            if(rem.r==n-1 && rem.c==m-1) return rem.msf ;
+            if(visited[rem.r][rem.c]==true) continue ;
+            visited[rem.r][rem.c]=true;
+        
+            for(int i = 0 ; i<4 ;i++){
+                int nR =rem.r + dir[i][0];
+                int nC =rem.c + dir[i][1];
+                
+                if(nR<0||nC<0||nR>=n||nC>=m|| visited[nR][nC]==true){
+                        continue ;
+                
+                }
+                pq.add(new Pair(nR,nC,Math.max(rem.msf,grid[nR][nC])));
+                
+            }   
+            
+            
+            
+            
+        
+        }
+        
+        
+        return 0 ;
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    }
+    
+    
+    
+    
+    
+    
+    class Pair implements Comparable<Pair>{
+            int r;
+            int c;
+            int msf ;
+     Pair(int r , int c , int msf){
+         this.r =r ;
+         this.c = c;
+         this.msf = msf ;
+     }
+       public int compareTo(Pair o){
+            return this.msf - o.msf;
+        }
+    
+    }
+    
+    
+    
+    
+}
