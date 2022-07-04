@@ -1,0 +1,59 @@
+class Solution {
+    public int[][] updateMatrix(int[][] mat) {
+        int n = mat.length ;
+        int m = mat[0].length;
+        int ans[][] = new int [n][m];
+        Queue<Pair> q = new LinkedList<>();
+        for(int i = 0 ; i<n ; i++){
+            for(int j = 0 ;  j<m ; j++){
+                if(mat[i][j]==0){
+                    q.add(new Pair(i,j));
+                }
+            }
+        }
+        
+        int lev = 1 ;
+        int  [][] dir = {{0,1},{1,0},{0,-1},{-1,0}};
+        while(q.size()>0){
+            int size = q.size();
+            while(size-->0){
+                Pair rem = q.remove();
+                // mat[i][j]=1;
+                for(int i = 0 ; i<4 ;i++){
+                int nR =rem.i + dir[i][0];
+                int nC =rem.j + dir[i][1];
+                 if(nR<0||nC<0||nR>=n||nC>=m|| mat[nR][nC]==0){
+                        continue ;
+                }
+                mat[nR][nC]=0;
+                ans[nR][nC]=lev;
+                q.add(new Pair(nR,nC));
+                
+            }
+        
+        }
+            lev++;
+        
+        
+        
+    }
+    return ans;
+    
+    
+
+    
+    }
+    
+      class Pair{
+            int i ;
+            int j ; 
+            Pair(int i , int j){
+                this.i=i;
+                this.j = j ;
+                
+            }
+    
+    
+    
+}
+}
