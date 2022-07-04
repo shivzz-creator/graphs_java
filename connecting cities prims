@@ -1,0 +1,76 @@
+
+import java.util.*;
+public class Solution {
+     static class Pair implements Comparable<Pair>{
+        int val ;
+        int wt ;
+        Pair(int val , int wt){
+            this.wt =wt ;
+            this.val = val ;
+        }
+        
+        public int compareTo(Pair o){
+            return this.wt - o.wt;
+        }
+        
+    }
+    public static int getMinimumCost(int n, int m, int[][] connections) {
+        // Write your code here.
+        ArrayList<ArrayList<ArrayList<Integer>>> adj = new ArrayList<>();
+        adj.add(new ArrayList<ArrayList<Integer>>());
+        for(int i = 0 ; i<n ; i++){
+            adj.add(new ArrayList<ArrayList<Integer>>());
+        }
+        for(int i = 0 ; i< m ; i++){
+            ArrayList<Integer> a =  new ArrayList<>();
+            a.add(connections[i][1]);
+            a.add(connections[i][2]);
+            adj.get(connections[i][0]).add(a);
+            ArrayList<Integer> b =  new ArrayList<>();
+            b.add(connections[i][0]);
+            b.add(connections[i][2]);
+            adj.get(connections[i][1]).add(b);
+        }
+        
+          PriorityQueue<Pair> pq = new PriorityQueue<>();
+        Integer visited [] = new Integer[n+1];
+        
+        pq.add(new Pair(1,0));
+        
+        while(pq.size()>0){
+            
+            Pair rem  = pq.remove();
+            if(visited[rem.val]!=null) continue ;
+            visited[rem.val] = rem.wt ;
+            
+            for(ArrayList<Integer> arr : adj.get(rem.val)){
+                int v =  arr.get(0) ;
+                int w =   arr.get(1);
+                
+                    pq.add(new Pair(arr.get(0),arr.get(1)));
+                
+                
+                
+            }
+            
+        }
+         int ans = 0 ;
+            for(int  i = 1 ; i<=n ; i++){
+                if(visited[i]==null){
+                    return -1 ;
+                }
+                ans+=visited[i];
+            
+            }
+            
+            return ans ;
+        
+        
+        
+        
+        
+        
+        
+    }
+    
+}
